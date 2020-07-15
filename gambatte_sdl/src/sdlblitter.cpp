@@ -182,10 +182,11 @@ void SdlBlitter::setBufferDimensions() {
 			break;
 #ifdef VGA_SCREEN
 		case 12:		/* Dot Matrix 3x */
-		case 13:		/* CRT 3x scaler */
+		case 13:		/* Dot Matrix Fullscreen */
+		case 14:		/* CRT 3x scaler */
 			SetVid(640, 480, 16);
 			break;
-		case 14:		/* CRT Fullscreen */
+		case 15:		/* CRT Fullscreen */
 			if (aspect_ratio_file) {
 				fwrite("0", 1, 1, aspect_ratio_file);
 				fclose(aspect_ratio_file);
@@ -264,11 +265,12 @@ void SdlBlitter::setScreenRes() {
 			break;
 #ifdef VGA_SCREEN
 		case 12:		/* Dot Matrix 3x */
-		case 13:		/* CRT 3x scaler */
+		case 13:		/* Dot Matrix Fullscreen */
+		case 14:		/* CRT 3x scaler */
 			if(screen->w != 640 || screen->h != 480)
 				SetVid(640, 480, 16);
 			break;
-		case 14:		/* CRT Fullscreen */
+		case 15:		/* CRT Fullscreen */
 			if (aspect_ratio_file) {
 				fwrite("0", 1, 1, aspect_ratio_file);
 				fclose(aspect_ratio_file);
@@ -505,11 +507,18 @@ void SdlBlitter::draw() {
 					scale3x_dotmatrix((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)surface->pixels, menupalwhite);
 				}
 				break;
-			case 13:		/* CRT 3x scaler */
+			case 13:
+				if (gameiscgb == 1){
+					scale3x_dotmatrix((uint32_t*)screen->pixels, (uint32_t*)surface->pixels, menupalblack);
+				} else {
+					scale3x_dotmatrix((uint32_t*)creen->pixels, (uint32_t*)surface->pixels, menupalwhite);
+				}
+				break;
+			case 14:		/* CRT 3x scaler */
 				offset = (2 * (640 - 480) / 2) + ((480 - 432) / 2) * screen->pitch;
 				scale3x_crt((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)surface->pixels);
 				break;
-			case 14:	/* CRT Fullscreen */
+			case 15:	/* CRT Fullscreen */
 				fullscreen_crt((uint32_t*)screen->pixels, (uint32_t*)surface->pixels);
 				break;
 #endif
@@ -586,11 +595,18 @@ void SdlBlitter::draw() {
 					scale3x_dotmatrix((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)currframe->pixels, menupalwhite);
 				}
 				break;
-			case 13:		/* CRT 3x scaler */
+			case 13:		/* Dot Matrix Fullscreen scaler */
+				if (gameiscgb == 1){
+					scale3x_dotmatrix((uint32_t*)screen->pixels, (uint32_t*)currframe->pixels, menupalblack);
+				} else {
+					scale3x_dotmatrix((uint32_t*)screen->pixels, (uint32_t*)currframe->pixels, menupalwhite);
+				}
+				break;
+			case 14:		/* CRT 3x scaler */
 				offset = (2 * (640 - 480) / 2) + ((480 - 432) / 2) * screen->pitch;
 				scale3x_crt((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)currframe->pixels);
 				break;
-			case 14:		/* CRT Fullscreen */
+			case 15:		/* CRT Fullscreen */
 				fullscreen_crt((uint32_t*)screen->pixels, (uint32_t*)currframe->pixels);
 				break;
 #endif
@@ -682,11 +698,18 @@ void SdlBlitter::scaleMenu() {
 				scale3x_dotmatrix((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)menuscreen->pixels, menupalwhite);
 			}
 			break;
-		case 13:		/* CRT 3x scaler */
+		case 12:		/* Dot Matrix Fullscreen scaler */
+			if (gameiscgb == 1){
+				scale3x_dotmatrix((uint32_t*)screen->pixels, (uint32_t*)menuscreen->pixels, menupalblack);
+			} else {
+				scale3x_dotmatrix((uint32_t*)screen->pixels, (uint32_t*)menuscreen->pixels, menupalwhite);
+			}
+			break;
+		case 14:		/* CRT 3x scaler */
 			offset = (2 * (640 - 480) / 2) + ((480 - 432) / 2) * screen->pitch;
 			scale3x_crt((uint32_t*)((uint8_t *)screen->pixels + offset), (uint32_t*)menuscreen->pixels);
 			break;
-		case 14:		/* CRT Fullscreen */
+		case 15:		/* CRT Fullscreen */
 			fullscreen_crt((uint32_t*)screen->pixels, (uint32_t*)menuscreen->pixels);
 			break;
 #endif

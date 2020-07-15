@@ -1381,7 +1381,8 @@ void createBorderSurface(){
 			borderimg = SDL_CreateRGBSurface(SDL_SWSURFACE, 8, 8, 16, 0, 0, 0, 0);
 			break;
 		case 12:	/* Dot Matrix 3x scaler */
-		case 13:	/* CRT 3x scaler */
+		case 13:	/* Dot Matrix Fullscreen scaler */
+		case 14:	/* CRT 3x scaler */
 #endif
 		case 1:		/* Ayla's 1.5x scaler */
 		case 2:		/* Bilinear 1.5x scaler */
@@ -1581,7 +1582,8 @@ void paint_border(SDL_Surface *surface){
     		offset = 2;
 			scaleborder3x((uint32_t*)((uint8_t *)surface->pixels + offset * bpp), (uint32_t*)borderimg->pixels);
 			break;
-		case 13:	/* CRT 3x scaler */
+		case 13: 	/* Dot Matrix Fullscreen scaler */
+		case 14:	/* CRT 3x scaler */
 			rect.x = 0;
     		rect.y = 0;
     		rect.w = 2;
@@ -1595,7 +1597,7 @@ void paint_border(SDL_Surface *surface){
     		offset = 2;
 			scaleborder3x_crt((uint32_t*)((uint8_t *)surface->pixels + offset * bpp), (uint32_t*)borderimg->pixels);
 			break;
-		case 14:	/* CRT Fullscreen */
+		case 15:	/* CRT Fullscreen */
 #endif
 		case 5:		/* Ayla's fullscreen scaler */
 		case 6:		/* Bilinear fullscreen scaler */

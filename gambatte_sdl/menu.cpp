@@ -1207,6 +1207,11 @@ static void callback_scaler(menu_t *caller_menu) {
         menu_entry->callback = callback_selectedscaler;
 
         menu_entry = new_menu_entry(0);
+        menu_entry_set_text(menu_entry, "Dot Matrix FullScreen");
+        menu_add_entry(menu, menu_entry);
+        menu_entry->callback = callback_selectedscaler;
+
+        menu_entry = new_menu_entry(0);
         menu_entry_set_text(menu_entry, "CRT 3x");
         menu_add_entry(menu, menu_entry);
         menu_entry->callback = callback_selectedscaler;
